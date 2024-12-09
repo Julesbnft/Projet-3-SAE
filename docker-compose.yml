@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dolibarr
+    ports:
+      - "3306:3306" # Expose le port MariaDB
+    volumes:
+      - ./dolibarr_mariadb:/var/lib/mysql
+
+  web:
+    image: dolibarr/dolibarr:latest
+    environment:
+      DOLI_DB_HOST: mariadb
+      DOLI_DB_USER: root
+      DOLI_DB_PASSWORD: root
+      DOLI_DB_NAME: dolibarr
+    ports:
+      - "80:80"
+    depends_on:
+      - mariadb
+
